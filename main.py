@@ -6,10 +6,12 @@ import random
 from PySide6.QtCore import QObject, QCoreApplication, QTimer
 from multiprocessing import Process
 
+
 # ANSI escape codes for coloring
 COLOR_GREEN = "\033[92m"
 COLOR_BLUE = "\033[94m"
 COLOR_RESET = "\033[0m"
+
 
 # Custom Log Formatter to color processName
 class CustomFormatter(logging.Formatter):
