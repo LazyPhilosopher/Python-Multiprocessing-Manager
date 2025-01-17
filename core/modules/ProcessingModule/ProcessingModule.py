@@ -27,8 +27,7 @@ class ProcessingModule(QObject):
         self.pipe_read_thread.start()
 
         self.running_processes = []
-        self.pipe_signal_dict = {}
-        # self.pending_tasks = []
+
         self.pending_requests = []
 
         self.qt_signals.processing_module_request.connect(self.store_request)
@@ -58,9 +57,10 @@ class ProcessingModule(QObject):
                         self.pipe_callback_dict.pop(child_pipe)
                         parent_pipe.close()
                         child_pipe.close()
+                    self.active_pipe_dict.pop(worker_uuid)
 
-                    headers = ["Processes running", "Pipes open", "Remaining requests"]
-                    data = [[len(self.running_processes), len( self.pipe_callback_dict), len(self.pending_requests)]]
+                    headers = ["Processes running", "Pipes open", "Pending requests", "Active Pipe Pair Dict"]
+                    data = [[len(self.running_processes), len( self.pipe_callback_dict), len(self.pending_requests), sum(len(v) for v in self.active_pipe_dict.values())]]
 
                     print(tabulate(data, headers=headers, tablefmt="grid"))
                     self.assign_tasks()
